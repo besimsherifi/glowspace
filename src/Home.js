@@ -25,19 +25,19 @@ function Home() {
                 <section>
                     <div className=' m-auto text-left px-8'>
                         <div>
-                            <h1 className='sm:text-5xl text-4xl mb-4 mt-10 font-body'>Tarife</h1>
-                            <p className='font-body'>Möchten Sie sich in unserem Schönheitssalon eine Laserbehandlung unterziehen? Hast auch du genug vom Rasieren, Wachsen, Sugaring und Zupfen?
-                                Dann wird es Zeit für eine Laserbehandlung!
-                                Dank der Laser-Haarentfernung kannst du dich über dauerhaft glatte Haut freuen.
-                                Sie ist eine Grundbedürfnis für jede Frau.</p>
+                            <h1 className='sm:text-5xl text-4xl mb-4 mt-10 font-body'>Was ist Laser-Haarentfernung?</h1>
+                            <p className='font-body'>Laser-Haarentfernung ist eine angenehme Methode, bei der Haare dauerhaft entfernt werden. Bei der Laser-Haarentfernung werden Haarfollikel mithilfe von Laserimpulsen zerstört, wodurch das Haarwachstum in diesem Bereich verhindert wird. Alle 4 bis 6 Wochen unterziehen Sie sich einer Laserbehandlung und am Ende aller Behandlungen haben die meisten Menschen eine dauerhafte Haarentfernung erlebt. Eingewachsene Haare gehören der Vergangenheit und Sie müssen keine Rasierer, Wachsstreifen oder Rasierschaum mehr kaufen. Was für eine Erleichterung!</p>
                         </div>
                     </div>
-
+                    <br></br>
                     <section>
                         <div className=' m-auto text-left px-8'>
                             <div>
-                                <h1 className='sm:text-2xl text-xl mb-4 mt-10 font-body'>Was ist Laser-Haarentfernung? </h1>
-                                <p className='font-body'>Laser-Haarentfernung ist eine angenehme Methode, bei der Haare dauerhaft entfernt werden. Bei der Laser-Haarentfernung werden Haarfollikel mithilfe von Laserimpulsen zerstört, wodurch das Haarwachstum in diesem Bereich verhindert wird. Alle 4 bis 6 Wochen unterziehen Sie sich einer Laserbehandlung und am Ende aller Behandlungen haben die meisten Menschen eine dauerhafte Haarentfernung erlebt. Eingewachsene Haare gehören der Vergangenheit und Sie müssen keine Rasierer, Wachsstreifen oder Rasierschaum mehr kaufen. Was für eine Erleichterung!</p>
+                                {/* <h1 className='sm:text-2xl text-xl mb-4 mt-10 font-body'>Was ist Laser-Haarentfernung? </h1> */}
+                                <p className='font-body'>Möchten Sie sich in unserem Schönheitssalon eine Laserbehandlung unterziehen? Hast auch du genug vom Rasieren, Wachsen, Sugaring und Zupfen?
+                                    Dann wird es Zeit für eine Laserbehandlung!
+                                    Dank der Laser-Haarentfernung kannst du dich über dauerhaft glatte Haut freuen.
+                                    Sie ist eine Grundbedürfnis für jede Frau.</p>
                             </div>
                         </div>
                     </section>
