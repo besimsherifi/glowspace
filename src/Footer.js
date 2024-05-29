@@ -22,8 +22,8 @@ function Footer() {
 
                 </div>
                 <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-                <span className='text-white'>076 442 88 82</span><br></br>
-                <span className='text-white'>Luegislandstrasse 31, Zürich, Switzerland 8051</span>
+                <span className='block text-white text-center'>076 442 88 82</span><br></br>
+                <span className=' block text-sm text-white sm:text-center'>Luegislandstrasse 31, Zürich, Switzerland 8051</span>
                 <span class="block text-sm text-white sm:text-center">© {currentYear} <a href="https://www.instagram.com/beautyglowspace/" class="hover:underline">glow space</a></span>
             </div>
         </footer>

@@ -41,3 +41,7 @@
 .webkit {
   text-align: -webkit-center;
 }
+
+.webkit-fill {
+  width: -webkit-fill-available
+}
