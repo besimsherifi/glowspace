@@ -72,7 +72,7 @@ function Home() {
                     <hr />
                     <Service title="Ganz Körper - Erste Behandlung" duration={90} price={130} fontSize={false} />
                     <hr />
-                    <Service title="Ganz Körper- Weitere Behandlung" duration={90} price={150} fontSize={false} />
+                    <Service title="Ganz Körper- Weitere Behandlung" duration={90} price={160} fontSize={false} />
 
 
 
