@@ -8,7 +8,7 @@ function LoginComponent() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [appointments, setAppointments] = useState([]);
+    const [appointments, setAppointments] = useState({});
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,29 +25,49 @@ function LoginComponent() {
         const fetchAppointments = async () => {
             const querySnapshot = await getDocs(collection(db, 'appointments'));
             const allAppointments = querySnapshot.docs.map(doc => doc.data());
-            setAppointments(allAppointments);
+
+            // Group appointments by month
+            const groupedAppointments = allAppointments.reduce((acc, appointment) => {
+                const date = new Date(appointment.date.seconds * 1000);
+                const monthYear = date.toLocaleString('de-DE', { month: 'long', year: 'numeric' });
+
+                if (!acc[monthYear]) {
+                    acc[monthYear] = [];
+                }
+                acc[monthYear].push(appointment);
+                return acc;
+            }, {});
+
+            setAppointments(groupedAppointments);
         };
         fetchAppointments();
     }, []);
 
     return (
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto xxl:h-screen lg:py-0">
             {isLoggedIn ? (
                 <div className="w-full bg-green-100 rounded-lg shadow p-6">
                     <h2 className="text-2xl font-bold text-green-700">Glückwunsch!</h2>
                     <p>Sie haben sich erfolgreich angemeldet.</p>
                     <div className="mt-4">
                         <h3 className="text-xl font-bold">Alle Termine</h3>
-                        {appointments.length > 0 ? (
-                            <ul className="mt-2 space-y-2">
-                                {appointments.map((appointment, index) => (
-                                    <li key={index} className="p-2 bg-white rounded shadow">
-                                        <p>Behandlung: {appointment.treatment}</p>
-                                        <p>Datum: {new Date(appointment.date.seconds * 1000).toLocaleDateString('de-DE')}</p>
-                                        <p>Zeit: {appointment.time}</p>
-                                    </li>
-                                ))}
-                            </ul>
+                        {Object.keys(appointments).length > 0 ? (
+                            Object.entries(appointments).map(([monthYear, monthAppointments]) => (
+                                <div key={monthYear} className="mt-4">
+                                    <h4 className="text-xl font-semibold">{monthYear}</h4>
+                                    <ul className="mt-2 space-y-2">
+                                        {monthAppointments.map((appointment, index) => (
+                                            <li key={index} className="p-2 bg-white rounded shadow">
+                                                <p><strong>Name:</strong> {appointment.vorname} {appointment.nachname}</p>
+                                                <p><strong>Telefon:</strong> {appointment.mobiltelefon}</p>
+                                                <p><strong>Behandlung:</strong> {appointment.treatments.join(', ')}</p>
+                                                <p><strong>Datum:</strong> {new Date(appointment.date.seconds * 1000).toLocaleDateString('de-DE')}</p>
+                                                <p><strong>Zeit:</strong> {appointment.time}</p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))
                         ) : (
                             <p>Keine Termine gefunden.</p>
                         )}
