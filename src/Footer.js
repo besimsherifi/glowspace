@@ -16,7 +16,7 @@ function Footer() {
                 <div class="sm:flex sm:items-center sm:justify-between webkit">
 
                     <img src={logo} className='h-40' alt="GlowSpace Logo" />
-                    <a href='https://www.instagram.com/beautyglowspace/' target='_blank' rel="noreferrer"><img src={insta} className='h-8' /></a>
+                    <a href='https://www.instagram.com/beautyglowspace/' target='_blank' rel="noreferrer"><img src={insta} className='h-8' alt='insta' /></a>
 
 
                 </div>
