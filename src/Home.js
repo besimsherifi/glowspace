@@ -6,19 +6,6 @@ import { Link } from 'react-router-dom';
 function Home() {
     return (
         <div className="App">
-            {/* <div className='bg-red-100 h-[40px] border-b-2'>
-
-      </div>
-      <div className='flex border-b-2'>
-        <div className='my-4'>
-          <img src={logo} width={150} />
-          <h1>wilkomen bei glow space!</h1>
-        </div>
-      </div> */}
-
-
-
-
             <section className='max-w-[1000px] m-auto mb-[250px]'>
 
 

@@ -19,9 +19,9 @@ function Navbar() {
 
                         </div>
                         <div className='flex mt-2.5'>
-                            <a href='https://www.instagram.com/beautyglowspace/' target='_blank'><img src={insta} className='max-h-[20px] mr-4' /></a>
+                            <a href='https://www.instagram.com/beautyglowspace/' target='_blank' rel="noreferrer"><img src={insta} alt='insta' className='max-h-[20px] mr-4' /></a>
                             <Link to='/mytermin'>
-                                <img src={profile} className='max-h-[20px] cursor-pointer' />
+                                <img src={profile} className='max-h-[20px] cursor-pointer' alt='myTermin' />
                             </Link>
                         </div>
                     </div>
