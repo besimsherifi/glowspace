@@ -31,12 +31,13 @@ function Termin() {
     const data = [
         { price: 40, label: "Gesicht komplett - 40 CHF" },
         { price: 20, label: "Oberlippen - 20 CHF" },
-        { price: 40, label: "Kinn - 40 CHF" },
+        { price: 40, label: "Kinn - 20 CHF" },
+        { price: 40, label: "Arme - 50 CHF" },
         { price: 40, label: "Achseln - 40 CHF" },
         { price: 40, label: "Unterbeine - 40 CHF" },
         { price: 50, label: "Bikinizone - 50 CHF" },
         { price: 130, label: "Ganz Körper - Erste Behandlung - 130 CHF" },
-        { price: 150, label: "Ganz Körper- Weitere Behandlung - 150 CHF" }
+        { price: 150, label: "Ganz Körper- Weitere Behandlung - 160 CHF" }
     ];
 
     const timeSlots = ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"];
@@ -202,7 +203,7 @@ function Termin() {
                             </button>
                         </>
                     ) : (
-                        <form onSubmit={handleSubmit} className='flex flex-col items-start pl-4 pr-4'>
+                        <form onSubmit={handleSubmit} className='flex flex-col items-end pl-4 pr-4'>
                             <input
                                 type="text"
                                 name="vorname"

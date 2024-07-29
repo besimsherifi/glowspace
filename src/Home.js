@@ -45,11 +45,13 @@ function Home() {
 
 
 
-                    <Service title="Gesicht komplett" duration={15} price={40} fontSize={true} />
+                    <Service title="Gesicht komplett" duration={20} price={40} fontSize={true} />
                     <hr />
                     <Service title="Oberlippen" duration={10} price={20} fontSize={true} />
                     <hr />
-                    <Service title="Kinn" duration={10} price={40} fontSize={true} />
+                    <Service title="Kinn" duration={10} price={20} fontSize={true} />
+                    <hr />
+                    <Service title="Arme" duration={20} price={50} fontSize={true} />
                     <hr />
                     <Service title="Achseln" duration={15} price={40} fontSize={true} />
                     <hr />
