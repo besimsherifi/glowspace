@@ -63,6 +63,7 @@ function LoginComponent() {
                                                 <p><strong>Behandlung:</strong> {appointment.treatments.join(', ')}</p>
                                                 <p><strong>Datum:</strong> {new Date(appointment.date.seconds * 1000).toLocaleDateString('de-DE')}</p>
                                                 <p><strong>Zeit:</strong> {appointment.time}</p>
+                                                <p><strong>Besondere Wünsche: </strong>{appointment.besondereWuensche}</p>
                                             </li>
                                         ))}
                                     </ul>

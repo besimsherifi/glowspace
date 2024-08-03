@@ -9,20 +9,18 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 
-
-
 registerLocale('de', de);
 
 function Termin() {
     const navigate = useNavigate();
-
 
     const [step, setStep] = useState(1);
     const [personalInfo, setPersonalInfo] = useState({
         vorname: '',
         nachname: '',
         email: '',
-        mobiltelefon: ''
+        mobiltelefon: '',
+        besondereWuensche: ''  // Add besondereWuensche to the state
     });
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [startDate, setStartDate] = useState(new Date());
@@ -84,7 +82,8 @@ function Termin() {
                     ...personalInfo,
                     treatments: selectedOptions,
                     date: startDate,
-                    time: selectedTime
+                    time: selectedTime,
+                    besondereWuensche: personalInfo.besondereWuensche // Include besondereWuensche in the submission
                 });
                 toast.success('Termin erfolgreich erstellt!', {
                     position: "top-center",
@@ -111,8 +110,6 @@ function Termin() {
                     progress: undefined,
                     theme: "light",
                 });
-
-
             }
         } else {
             toast.warn('Bitte füllen Sie alle Felder aus', {
@@ -233,6 +230,13 @@ function Termin() {
                                 name="mobiltelefon"
                                 placeholder="Mobiltelefon"
                                 value={personalInfo.mobiltelefon}
+                                onChange={handlePersonalInfoChange}
+                                className='w-full p-2 mt-2 rounded'
+                            />
+                            <textarea
+                                name="besondereWuensche"
+                                placeholder="Besondere Wünsche"
+                                value={personalInfo.besondereWuensche}
                                 onChange={handlePersonalInfoChange}
                                 className='w-full p-2 mt-2 rounded'
                             />
