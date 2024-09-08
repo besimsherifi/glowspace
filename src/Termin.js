@@ -27,15 +27,15 @@ function Termin() {
     const [selectedTime, setSelectedTime] = useState(null);
 
     const data = [
-        { price: 40, label: "Gesicht komplett - 40 CHF" },
-        { price: 20, label: "Oberlippen - 20 CHF" },
-        { price: 40, label: "Kinn - 20 CHF" },
-        { price: 40, label: "Arme - 50 CHF" },
-        { price: 40, label: "Achseln - 40 CHF" },
-        { price: 40, label: "Unterbeine - 40 CHF" },
+        { price: 60, label: "Gesicht komplett - 60 CHF" },
+        { price: 30, label: "Oberlippen - 30 CHF" },
+        { price: 30, label: "Kinn - 30 CHF" },
+        { price: 40, label: "Arme - 70 CHF" },
+        { price: 60, label: "Achseln - 60 CHF" },
+        { price: 40, label: "Unterbeine - 60 CHF" },
         { price: 50, label: "Bikinizone - 50 CHF" },
-        { price: 130, label: "Ganz Körper - Erste Behandlung - 130 CHF" },
-        { price: 150, label: "Ganz Körper- Weitere Behandlung - 160 CHF" }
+        { price: 130, label: "Ganz Körper - Erste Behandlung - 150 CHF" },
+        { price: 150, label: "Ganz Körper- Weitere Behandlung - 180 CHF" }
     ];
 
     const timeSlots = ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"];

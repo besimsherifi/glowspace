@@ -45,23 +45,23 @@ function Home() {
 
 
 
-                    <Service title="Gesicht komplett" duration={20} price={40} fontSize={true} />
+                    <Service title="Gesicht komplett" duration={20} price={60} fontSize={true} />
                     <hr />
-                    <Service title="Oberlippen" duration={10} price={20} fontSize={true} />
+                    <Service title="Oberlippen" duration={10} price={30} fontSize={true} />
                     <hr />
-                    <Service title="Kinn" duration={10} price={20} fontSize={true} />
+                    <Service title="Kinn" duration={10} price={30} fontSize={true} />
                     <hr />
-                    <Service title="Arme" duration={20} price={50} fontSize={true} />
+                    <Service title="Arme" duration={20} price={70} fontSize={true} />
                     <hr />
-                    <Service title="Achseln" duration={15} price={40} fontSize={true} />
+                    <Service title="Achseln" duration={15} price={60} fontSize={true} />
                     <hr />
-                    <Service title="Unterbeine" duration={20} price={40} fontSize={true} />
+                    <Service title="Unterbeine" duration={20} price={60} fontSize={true} />
                     <hr />
                     <Service title="Bikinizone" duration={15} price={50} fontSize={true} />
                     <hr />
-                    <Service title="Ganz Körper - Erste Behandlung" duration={90} price={130} fontSize={false} />
+                    <Service title="Ganz Körper ( gesicht , achseln, arme, unterbeine ) - Erste Behandlung" duration={90} price={150} fontSize={false} />
                     <hr />
-                    <Service title="Ganz Körper- Weitere Behandlung" duration={90} price={160} fontSize={false} />
+                    <Service title="Ganz Körper ( gesicht , achseln, arme, unterbeine ) - Weitere Behandlung" duration={90} price={180} fontSize={false} />
 
 
 
