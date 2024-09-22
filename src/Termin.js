@@ -33,8 +33,8 @@ function Termin() {
         { price: 40, label: "Arme - 70 CHF" },
         { price: 60, label: "Achseln - 60 CHF" },
         { price: 40, label: "Unterbeine - 60 CHF" },
-        { price: 50, label: "Bikinizone - 50 CHF" },
-        { price: 130, label: "Ganz Körper - Erste Behandlung - 150 CHF" },
+        // { price: 50, label: "Bikinizone - 50 CHF" },
+        { price: 130, label: "Ganz Körper - Erste Behandlung - 160 CHF" },
         { price: 150, label: "Ganz Körper- Weitere Behandlung - 180 CHF" }
     ];
 

@@ -57,9 +57,9 @@ function Home() {
                     <hr />
                     <Service title="Unterbeine" duration={20} price={60} fontSize={true} />
                     <hr />
-                    <Service title="Bikinizone" duration={15} price={50} fontSize={true} />
-                    <hr />
-                    <Service title="Ganz Körper ( gesicht , achseln, arme, unterbeine ) - Erste Behandlung" duration={90} price={150} fontSize={false} />
+                    {/* <Service title="Bikinizone" duration={15} price={50} fontSize={true} /> */}
+                    {/* <hr /> */}
+                    <Service title="Ganz Körper ( gesicht , achseln, arme, unterbeine ) - Erste Behandlung" duration={90} price={160} fontSize={false} />
                     <hr />
                     <Service title="Ganz Körper ( gesicht , achseln, arme, unterbeine ) - Weitere Behandlung" duration={90} price={180} fontSize={false} />
 
