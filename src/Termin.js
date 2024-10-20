@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { registerLocale } from 'react-datepicker';
 import { de } from 'date-fns/locale';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from './Firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,11 +20,13 @@ function Termin() {
         nachname: '',
         email: '',
         mobiltelefon: '',
-        besondereWuensche: ''  // Add besondereWuensche to the state
+        besondereWuensche: ''
     });
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [startDate, setStartDate] = useState(new Date());
     const [selectedTime, setSelectedTime] = useState(null);
+    const [availableTimeSlots, setAvailableTimeSlots] = useState([]);
+    const [nonWorkingDays, setNonWorkingDays] = useState([]);
 
     const data = [
         { price: 60, label: "Gesicht komplett - 60 CHF" },
@@ -33,12 +35,56 @@ function Termin() {
         { price: 40, label: "Arme - 70 CHF" },
         { price: 60, label: "Achseln - 60 CHF" },
         { price: 40, label: "Unterbeine - 60 CHF" },
-        // { price: 50, label: "Bikinizone - 50 CHF" },
         { price: 130, label: "Ganz Körper - Erste Behandlung - 160 CHF" },
         { price: 150, label: "Ganz Körper- Weitere Behandlung - 180 CHF" }
     ];
 
-    const timeSlots = ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"];
+    const allTimeSlots = ["10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"];
+
+    useEffect(() => {
+        fetchNonWorkingDays();
+        if (!isNonWorkingDay(startDate)) {
+            fetchAvailableTimeSlots(formatDate(startDate));
+        }
+    }, [startDate]);
+
+    const formatDate = (date) => {
+        return date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+    };
+
+    const fetchNonWorkingDays = async () => {
+        const docRef = doc(db, 'settings', 'nonWorkingDays');
+        try {
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                setNonWorkingDays(docSnap.data().days.map(day => new Date(day)));
+            }
+        } catch (error) {
+            console.error("Error fetching non-working days: ", error);
+            toast.error('Fehler beim Abrufen der arbeitsfreien Tage');
+        }
+    };
+
+    const isNonWorkingDay = (date) => {
+        return nonWorkingDays.some(nonWorkingDate =>
+            nonWorkingDate.toDateString() === date.toDateString()
+        );
+    };
+
+    const fetchAvailableTimeSlots = async (dateString) => {
+        const appointmentsRef = collection(db, 'appointments');
+        const q = query(appointmentsRef, where("date", "==", dateString));
+
+        try {
+            const querySnapshot = await getDocs(q);
+            const bookedSlots = querySnapshot.docs.map(doc => doc.data().time);
+            const available = allTimeSlots.filter(slot => !bookedSlots.includes(slot));
+            setAvailableTimeSlots(available);
+        } catch (error) {
+            console.error("Error fetching booked slots: ", error);
+            toast.error('Fehler beim Abrufen der verfügbaren Zeitfenster');
+        }
+    };
 
     const handlePersonalInfoChange = (e) => {
         setPersonalInfo({ ...personalInfo, [e.target.name]: e.target.value });
@@ -57,20 +103,21 @@ function Termin() {
         setSelectedTime(time);
     };
 
+    const handleDateChange = (date) => {
+        setStartDate(date);
+        setSelectedTime(null); // Reset selected time when date changes
+        if (!isNonWorkingDay(date)) {
+            fetchAvailableTimeSlots(formatDate(date));
+        } else {
+            setAvailableTimeSlots([]);
+        }
+    };
+
     const handleNextStep = () => {
         if (selectedOptions.length > 0 && startDate && selectedTime) {
             setStep(2);
         } else {
-            toast.warn('Bitte wählen Sie alle Optionen aus', {
-                position: "top-center",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            toast.warn('Bitte wählen Sie alle Optionen aus');
         }
     };
 
@@ -81,70 +128,33 @@ function Termin() {
                 await addDoc(collection(db, 'appointments'), {
                     ...personalInfo,
                     treatments: selectedOptions,
-                    date: startDate,
+                    date: formatDate(startDate),
                     time: selectedTime,
-                    besondereWuensche: personalInfo.besondereWuensche // Include besondereWuensche in the submission
+                    besondereWuensche: personalInfo.besondereWuensche
                 });
-                toast.success('Termin erfolgreich erstellt!', {
-                    position: "top-center",
-                    autoClose: 2000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                toast.success('Termin erfolgreich erstellt!');
                 setTimeout(() => {
                     navigate('/');
                 }, 2000);
-
             } catch (error) {
-                toast.error('Fehler beim Erstellen des Termins', {
-                    position: "top-center",
-                    autoClose: 2000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                console.error("Error adding document: ", error);
+                toast.error('Fehler beim Erstellen des Termins');
             }
         } else {
-            toast.warn('Bitte füllen Sie alle Felder aus', {
-                position: "top-center",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            toast.warn('Bitte füllen Sie alle Felder aus');
         }
     };
 
     return (
         <>
-            <ToastContainer
-                position="top-center"
-                autoClose={2000}
-                hideProgressBar={true}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-            />
+            <ToastContainer position="top-center" autoClose={2000} hideProgressBar={true} />
             <section className='webkit'>
                 <div className='max-w-[450px] bg-[#d2cac7] rounded text-center my-12 py-6 mx-4'>
                     <h1 className='text-2xl text-start pl-4 font-body'>Termin machen</h1>
 
                     {step === 1 ? (
                         <>
+                            {/* Treatment selection */}
                             <div className='my-4'>
                                 <p className='text-start pl-4 font-body'>
                                     Wählen Sie Behandlungen
@@ -165,6 +175,7 @@ function Termin() {
                                 </div>
                             </div>
 
+                            {/* Date selection */}
                             <div className='my-10 table'>
                                 <p className='text-start pl-4 font-body mb-2'>
                                     Wählen Sie eine Datum
@@ -172,18 +183,20 @@ function Termin() {
                                 <DatePicker
                                     locale={de}
                                     selected={startDate}
-                                    onChange={(date) => setStartDate(date)}
+                                    onChange={handleDateChange}
                                     toggleCalendarOnIconClick
                                     className='rounded ml-6 p-2'
+                                    filterDate={date => !isNonWorkingDay(date)}
                                 />
                             </div>
 
+                            {/* Time selection */}
                             <div className='my-4'>
                                 <p className='text-start pl-4 font-body'>
                                     Wählen Sie eine Zeit
                                 </p>
                                 <div className='flex flex-wrap justify-center'>
-                                    {timeSlots.map((time) => (
+                                    {availableTimeSlots.map((time) => (
                                         <button
                                             key={time}
                                             className={`m-2 p-2 border rounded ${selectedTime === time ? 'bg-blue-500 text-white' : 'border-blue-500 text-blue-500'}`}
@@ -201,6 +214,7 @@ function Termin() {
                         </>
                     ) : (
                         <form onSubmit={handleSubmit} className='flex flex-col items-end pl-4 pr-4'>
+                            {/* Personal information form fields */}
                             <input
                                 type="text"
                                 name="vorname"
