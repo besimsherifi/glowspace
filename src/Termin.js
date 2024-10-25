@@ -52,7 +52,7 @@ function Termin() {
     }, [startDate]);
 
     const formatDate = (date) => {
-        return date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+        return date.toISOString().split('T')[0];
     };
 
     const fetchNonWorkingDays = async () => {
@@ -190,6 +190,7 @@ function Termin() {
                                     toggleCalendarOnIconClick
                                     className='rounded ml-6 p-2'
                                     filterDate={date => !isNonWorkingDay(date)}
+                                    minDate={new Date()}
                                 />
                             </div>
 
