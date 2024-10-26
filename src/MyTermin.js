@@ -31,11 +31,25 @@ function LoginComponent() {
     useEffect(() => {
         const fetchAppointments = async () => {
             const querySnapshot = await getDocs(collection(db, 'appointments'));
-            const allAppointments = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            const allAppointments = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+                // Convert the date string to a Date object if it's a string
+                date: doc.data().date.seconds ?
+                    new Date(doc.data().date.seconds * 1000) :
+                    new Date(doc.data().date)
+            }));
 
+            // Sort appointments by date
+            allAppointments.sort((a, b) => a.date - b.date);
+
+            // Group appointments by month and year
             const groupedAppointments = allAppointments.reduce((acc, appointment) => {
-                const date = new Date(appointment.date.seconds * 1000);
-                const monthYear = date.toLocaleString('de-DE', { month: 'long', year: 'numeric' });
+                // Format the month and year
+                const monthYear = appointment.date.toLocaleString('de-DE', {
+                    month: 'long',
+                    year: 'numeric'
+                });
 
                 if (!acc[monthYear]) {
                     acc[monthYear] = [];
@@ -181,32 +195,60 @@ function LoginComponent() {
 
                     <div className="mt-4">
                         <h3 className="text-xl font-bold">Alle Termine</h3>
-                        {Object.keys(appointments).length > 0 ? (
-                            Object.entries(appointments).map(([monthYear, monthAppointments]) => (
-                                <div key={monthYear} className="mt-4">
-                                    <h4 className="text-xl font-semibold">{monthYear}</h4>
-                                    <ul className="mt-2 space-y-2">
-                                        {monthAppointments.map((appointment, index) => (
-                                            <li key={index} className="p-2 bg-white rounded shadow">
-                                                <p><strong>Name:</strong> {appointment.vorname} {appointment.nachname}</p>
-                                                <p><strong>Telefon:</strong> {appointment.mobiltelefon}</p>
-                                                <p><strong>Behandlung:</strong> {appointment.treatments.join(', ')}</p>
-                                                <p><strong>Datum:</strong> {new Date(appointment.date.seconds * 1000).toLocaleDateString('de-DE')}</p>
-                                                <p><strong>Zeit:</strong> {appointment.time}</p>
-                                                <p><strong>Besondere Wünsche: </strong>{appointment.besondereWuensche}</p>
-                                                <button
-                                                    className="mt-2 bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700"
-                                                    onClick={() => handleDeleteAppointment(monthYear, index, appointment.id)}
-                                                >
-                                                    Termin löschen
-                                                </button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ))
+                        {Object.entries(appointments).length > 0 ? (
+                            <div className="space-y-6">
+                                {Object.entries(appointments)
+                                    .sort(([monthYearA], [monthYearB]) => {
+                                        // Convert month year strings to dates for sorting
+                                        const dateA = new Date(monthYearA.replace(/(\w+)\s(\d+)/, '$2-$1-01'));
+                                        const dateB = new Date(monthYearB.replace(/(\w+)\s(\d+)/, '$2-$1-01'));
+                                        return dateA - dateB;
+                                    })
+                                    .map(([monthYear, monthAppointments]) => (
+                                        <div key={monthYear} className="bg-white rounded-lg shadow-md p-4">
+                                            <h4 className="text-xl font-semibold text-blue-600 mb-3">{monthYear}</h4>
+                                            <div className="grid gap-4">
+                                                {monthAppointments.map((appointment, index) => (
+                                                    <div key={appointment.id} className="border-l-4 border-blue-500 bg-gray-50 p-4 rounded">
+                                                        <div className="flex justify-between items-start">
+                                                            <div className="flex-grow">
+                                                                <p className="font-semibold">
+                                                                    {appointment.vorname} {appointment.nachname}
+                                                                </p>
+                                                                <p className="text-sm text-gray-600">
+                                                                    {new Intl.DateTimeFormat('de-DE', {
+                                                                        day: '2-digit',
+                                                                        month: '2-digit',
+                                                                        year: 'numeric'
+                                                                    }).format(appointment.date)} - {appointment.time}
+                                                                </p>
+                                                                <p className="text-sm mt-1">
+                                                                    <span className="font-medium">Behandlung:</span> {appointment.treatments.join(', ')}
+                                                                </p>
+                                                                <p className="text-sm">
+                                                                    <span className="font-medium">Telefon:</span> {appointment.mobiltelefon}
+                                                                </p>
+                                                                {appointment.besondereWuensche && (
+                                                                    <p className="text-sm mt-2 italic">
+                                                                        "{appointment.besondereWuensche}"
+                                                                    </p>
+                                                                )}
+                                                            </div>
+                                                            <button
+                                                                onClick={() => handleDeleteAppointment(monthYear, index, appointment.id)}
+                                                                className="ml-4 text-red-600 hover:text-red-800 text-sm font-medium"
+                                                            >
+                                                                Löschen
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                            </div>
                         ) : (
-                            <p>Keine Termine gefunden.</p>
+                            <p className="text-gray-600 italic">Keine Termine gefunden.</p>
                         )}
                     </div>
                 </div>
